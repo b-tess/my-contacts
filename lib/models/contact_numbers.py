@@ -148,7 +148,8 @@ class ContactNumber:
 
 # ContactNumber.create_table()
 # print(ContactNumber.find_by_id(1))
-# cont2 = ContactNumber.create('02345', 2)
+# cont2 = ContactNumber.create('02345', 3)
+# ContactNumber.create('02345', 3)
 # print(cont2.delete())
 # cont2.number = '23478'
 # print(cont2.number)

@@ -57,6 +57,9 @@ class ContactName:
         CURSOR.execute(sql, (self.first_name, self.last_name, self.id))
         CONN.commit()
 
+        updated_name = self.find_by_id(self.id)
+        return updated_name
+
     def delete(self):
         '''Delete an object's data from a row in the contact names table. Remove the object from the local dict cache.'''
         sql = '''
@@ -139,6 +142,45 @@ class ContactName:
 
         rows = CURSOR.execute(sql, (lowercase_name, lowercase_name)).fetchall()
         return [cls.instance_from_db(row) for row in rows]
+    
+    @classmethod
+    def get_number(cls, id):
+        '''Get the number(s) linked to a particular contact name from the contact numbers table.'''
+        # print('Get number function called.')
+        
+        sql = '''
+            SELECT * FROM contact_numbers
+            WHERE contact_name_id = ?;
+        '''
+        
+        rows = CURSOR.execute(sql, (id,)).fetchall()
+        #Get the contact name row from the contact names table to allow population of the contact first name in the result of this function
+        contact_name_row = cls.find_by_id(id)
+
+        if rows:
+            for row in rows:
+                print(f'Contact {row[0]}: Name - {contact_name_row.first_name.capitalize()} Number - {row[1]}, ID - {row[2]}.')
+        else:
+            print('No number for the provided contact in record.')
+    
+    @classmethod
+    def get_names_numbers(cls):
+        '''Join contact names and contact numbers tables to get all names and numbers together in one query to display to the user.'''
+        sql = '''
+            SELECT * FROM (
+                SELECT first_name, last_name, number
+                FROM contact_names
+                JOIN contact_numbers
+                ON contact_names.id = contact_numbers.contact_name_id
+            );
+        '''
+
+        rows = CURSOR.execute(sql).fetchall()
+        if rows:
+            for row in rows:
+                print(f'{row[0]} {row[1]}, {row[2]}.') 
+            else:
+                return 'No contacts in your contact list.'
 
     @classmethod
     def drop_table(cls):
@@ -156,3 +198,11 @@ class ContactName:
 # print(ContactName.find_by_name('J'))
 # print(ContactName.get_all())
 # print('hello')
+# ContactName.get_names_numbers()
+# jon = ContactName.create('John', 'Michael')
+# print(jon)
+# jon.first_name = 'Jon'
+# print(jon.update())
+# print(jon.get_number())
+# jon.find_by_id(3)
+# ContactName.get_number(1)
