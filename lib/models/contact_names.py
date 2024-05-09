@@ -1,4 +1,4 @@
-from __init__ import CONN, CURSOR
+from .__init__ import CONN, CURSOR
 
 class ContactName:
     all_contact_names = {}

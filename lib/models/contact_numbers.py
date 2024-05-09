@@ -1,5 +1,5 @@
-from __init__ import CONN, CURSOR
-from contact_names import ContactName
+from .__init__ import CONN, CURSOR
+from .contact_names import ContactName
 
 class ContactNumber:
     all_contact_numbers = {}
