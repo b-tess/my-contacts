@@ -43,14 +43,16 @@ def update_contact_name():
         print(f'*****Contact with id {id} not found.*****')
 
 def view_all_contact_names():
-    contact_names = ContactName.get_all()
-    for name in contact_names:
-        print(f'{name}')
+    if contact_names := ContactName.get_all():
+        for name in contact_names:
+            print(f'{name}')
+    else:
+        print('No contact names to show.')
 
 def find_contact_name_by_id():
     id = input('Enter the contact name\'s ID: ')
     if contact_name := ContactName.find_by_id(id):
-        print(f'{contact_name}')
+        print(contact_name)
     else:
         print('*****Contact name ID not found.*****')
 
@@ -97,16 +99,54 @@ def delete_contact_name():
 
 #Contact numbers functions
 def create_contact_number():
-    pass
+    number = input('Enter a contact number: ')
+    contact_name_id = input('Enter a contact name id: ')
+
+    try:
+        contact_number = ContactNumber.create(number, int(contact_name_id))
+        print(f'Contact number created. {contact_number}')
+    except Exception as error:
+        print(f'*****Contact number not added: {error}*****')
 
 def update_contact_number():
-    pass
+    id = input('Enter the contact number ID: ')
+    if contact_number := ContactNumber.find_by_id(id):
+        try:
+            if new_number := input('Enter the new number: '):
+                contact_number.number = new_number
+            else:
+                contact_number.number = contact_number.number
+
+            if new_contact_name_id := int(input('Enter the new contact name ID: ')):
+                contact_number.contact_name_id = new_contact_name_id
+            else:
+                contact_number.contact_name_id = contact_number.contact_name_id
+
+            contact_number.update()
+            print(f'Contact number successfully updated: {contact_number}')
+        except Exception as error:
+            print(f'*****Contact number not updated: {error}')
+    else:
+        print('*****Contact number not updated: The contact number ID is not valid.*****')
 
 def view_all_contact_numbers():
-    pass
+    if contact_numbers := ContactNumber.get_all_numbers():
+        for contact_number in contact_numbers:
+            print(contact_number)
+    else:
+        print('*****No contact numbers to show.*****') 
 
 def find_a_number_by_id():
-    pass
+    id = input('Enter a contact number ID: ')
+    if contact_number := ContactNumber.find_by_id(id):
+        print(contact_number)
+    else:
+        print('*****Contact number ID not found.*****')
 
 def delete_contact_number():
-    pass
+    id = input('Enter the contact number ID: ')
+    if contact_name := ContactNumber.find_by_id(id):
+        contact_name.delete()
+        print('Contact number deleted.')
+    else:
+        print('*****Contact number ID not found.*****')

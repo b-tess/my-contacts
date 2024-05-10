@@ -12,7 +12,7 @@ class ContactNumber:
         #This is a one-to-many relationship & the number holds the relationship as the many
 
     def __repr__(self):
-        return f'Contact {self.id}: {self.number}, {self.contact_name_id}.'
+        return f'Contact {self.id}: Number - {self.number}, Contact name id - {self.contact_name_id}.'
     
     @property
     def number(self):
@@ -62,8 +62,8 @@ class ContactNumber:
         CURSOR.execute(sql, (self.number, self.contact_name_id, self.id))
         CONN.commit()
 
-        updated_number = self.find_by_id(self.id)
-        return updated_number
+        # updated_number = self.find_by_id(self.id)
+        # return updated_number
 
     def delete(self):
         '''Delete a row from the contact numbers table'''
@@ -77,8 +77,6 @@ class ContactNumber:
 
         del type(self).all_contact_numbers[self.id]
         self.id = None
-
-        return 'Number deleted.'
     
     @classmethod
     def create_table(cls):

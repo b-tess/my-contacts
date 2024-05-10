@@ -7,7 +7,12 @@ from helpers import (
     find_contact_name_by_name,
     view_one_contact_name_and_number,
     view_all_contact_names_and_numbers,
-    delete_contact_name
+    delete_contact_name,
+    create_contact_number,
+    update_contact_number,
+    view_all_contact_numbers,
+    find_a_number_by_id,
+    delete_contact_number
 )
 
 def main():
@@ -33,6 +38,16 @@ def main():
             view_all_contact_names_and_numbers()
         elif user_choice == '8':
             delete_contact_name()
+        elif user_choice == '9':
+            create_contact_number()
+        elif user_choice == '10':
+            update_contact_number()
+        elif user_choice == '11':
+            view_all_contact_numbers()
+        elif user_choice == '12':
+            find_a_number_by_id()
+        elif user_choice == '13':
+            delete_contact_number()
         else:
             print('Invalid option.')
 
@@ -47,6 +62,11 @@ def menu():
     print('6. View one contact name and its number(s).')
     print('7. View all your contact names and numbers.')
     print('8. Delete one contact name\'s data.')
+    print('9. Create a contact number.')
+    print('10. Update a contact number.')
+    print('11. View all your contact numbers.')
+    print('12. Find a contact number by id.')
+    print('13. Delete a contact number.')
 
 #Run the application only if this module is run
 if __name__ == '__main__':
