@@ -86,9 +86,9 @@ class ContactNumber:
         sql = '''
             CREATE TABLE contact_numbers (
                 id INTEGER PRIMARY KEY,
-                number VARCHAR(5),
-                contact_name_id INTEGER,
-                FOREIGN KEY (contact_name_id) REFERENCES contact_names
+                number VARCHAR(5) NOT NULL,
+                contact_name_id INTEGER NOT NULL,
+                FOREIGN KEY (contact_name_id) REFERENCES contact_names ON DELETE CASCADE
             );
         '''
 
