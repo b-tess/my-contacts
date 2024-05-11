@@ -33,7 +33,7 @@ class ContactNumber:
     
     @contact_name_id.setter
     def contact_name_id(self, contact_name_id):
-        if isinstance(contact_name_id, int) and ContactName.find_by_id(contact_name_id):
+        if ContactName.find_by_id(contact_name_id):
             self._contact_name_id = contact_name_id
         else:
             raise ValueError('Contact name id should be a valid id value.')

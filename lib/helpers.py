@@ -16,8 +16,11 @@ def create_contact_name():
     try:
         contact_name = ContactName.create(first_name, last_name)
         print(f'Contact name created: {contact_name}')
-    except Exception:
-        print(f'Contact name not created: A contact, {first_name} {last_name}, already exists.')
+    except Exception as error:
+        if type(error).__name__ == 'IntegrityError':
+            print(f'Contact name not created: A contact, {first_name} {last_name}, already exists.')
+        else:
+            print(f'Contact name not created: {error}')
 
 def update_contact_name():
     id = input('Enter the contact name\'s ID: ')
@@ -103,7 +106,7 @@ def create_contact_number():
     contact_name_id = input('Enter a contact name id: ')
 
     try:
-        contact_number = ContactNumber.create(number, int(contact_name_id))
+        contact_number = ContactNumber.create(number, contact_name_id)
         print(f'Contact number created. {contact_number}')
     except Exception as error:
         print(f'*****Contact number not added: {error}*****')
@@ -117,7 +120,7 @@ def update_contact_number():
             else:
                 contact_number.number = contact_number.number
 
-            if new_contact_name_id := int(input('Enter the new contact name ID: ')):
+            if new_contact_name_id := input('Enter the new contact name ID: '):
                 contact_number.contact_name_id = new_contact_name_id
             else:
                 contact_number.contact_name_id = contact_number.contact_name_id
@@ -145,8 +148,12 @@ def find_a_number_by_id():
 
 def delete_contact_number():
     id = input('Enter the contact number ID: ')
-    if contact_name := ContactNumber.find_by_id(id):
-        contact_name.delete()
-        print('Contact number deleted.')
+    confirm = input('Are you sure you would like to delete this contact number? y/n: ')
+    if confirm == 'y' or confirm == 'Y':
+        if contact_name := ContactNumber.find_by_id(id):
+            contact_name.delete()
+            print('Contact number deleted.')
+        else:
+            print('*****Contact number ID not found.*****')
     else:
-        print('*****Contact number ID not found.*****')
+        print('Contact number not deleted.')
