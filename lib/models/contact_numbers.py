@@ -8,8 +8,6 @@ class ContactNumber:
         self.id = id
         self.number = number
         self.contact_name_id = contact_name_id
-        #Contact_name_id is the foreign key referencing the contact names table
-        #This is a one-to-many relationship & the number holds the relationship as the many
 
     def __repr__(self):
         return f'Contact {self.id}: Number - {self.number}, Contact name id - {self.contact_name_id}.'
@@ -21,10 +19,8 @@ class ContactNumber:
     @number.setter
     def number(self, number):
         if isinstance(number, str) and len(number) == 5 and number.isnumeric():
-            # print(f'number length {len(number)}.')
             self._number = number
         else:
-            # print('number setter called before error.')
             raise ValueError('Phone number should be numeric and 5 digits long.')
         
     @property
@@ -61,9 +57,6 @@ class ContactNumber:
 
         CURSOR.execute(sql, (self.number, self.contact_name_id, self.id))
         CONN.commit()
-
-        # updated_number = self.find_by_id(self.id)
-        # return updated_number
 
     def delete(self):
         '''Delete a row from the contact numbers table'''
@@ -143,13 +136,3 @@ class ContactNumber:
 
         CURSOR.execute(sql)
         CONN.commit()
-
-# ContactNumber.create_table()
-# print(ContactNumber.find_by_id(1))
-# cont2 = ContactNumber.create('02345', 3)
-# ContactNumber.create('02345', 3)
-# print(cont2.delete())
-# cont2.number = '23478'
-# print(cont2.number)
-# print(cont2.update())
-# print(ContactNumber.get_all_numbers())

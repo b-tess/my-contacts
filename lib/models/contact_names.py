@@ -57,12 +57,8 @@ class ContactName:
         CURSOR.execute(sql, (self.first_name, self.last_name, self.id))
         CONN.commit()
 
-        # updated_name = self.find_by_id(self.id)
-        # return updated_name
-
     def get_number(self):
         '''Get the number(s) linked to a particular contact name from the contact numbers table.'''
-        # print('Get number function called.')
         
         sql = '''
             SELECT * FROM contact_numbers
@@ -70,7 +66,7 @@ class ContactName:
         '''
         
         rows = CURSOR.execute(sql, (self.id,)).fetchall()
-        #Get the contact name row from the contact names table to allow population of the contact first name in the result of this function
+        #Get the contact name row from the contact names table to allow population of the contact first name in the return of this function
         contact_name_row = self.find_by_id(self.id)
 
         def contact_info(row):
@@ -86,12 +82,7 @@ class ContactName:
         '''
 
         CURSOR.execute(sql, (self.id,))
-        # CURSOR.executescript(sql, (self.id, self.id))
-        # CURSOR.executemany(sql, (self.id,))
-        CONN.commit()
-
-        #Deleting the foreign key associated data in contact numbers table is not working
-        #using the on delete cascade 
+        CONN.commit() 
 
         del type(self).all_contact_names[self.id]
         self.id = None
@@ -157,7 +148,6 @@ class ContactName:
     def find_by_name(cls, name):
         '''Find a row/rows in the contact names table casing not withstanding when a user searches for a name or part of a name in the table.'''
         lowercase_name = f'%{name.lower()}%'
-        # print(lowercase_name)
         sql = '''
             SELECT * FROM contact_names
             WHERE first_name LIKE ? OR last_name LIKE ?;
@@ -165,32 +155,6 @@ class ContactName:
 
         rows = CURSOR.execute(sql, (lowercase_name, lowercase_name)).fetchall()
         return [cls.instance_from_db(row) for row in rows]
-    
-    # @classmethod
-    # def get_number(cls, id):
-    #     '''Get the number(s) linked to a particular contact name from the contact numbers table.'''
-    #     # print('Get number function called.')
-        
-    #     sql = '''
-    #         SELECT * FROM contact_numbers
-    #         WHERE contact_name_id = ?;
-    #     '''
-        
-    #     rows = CURSOR.execute(sql, (id,)).fetchall()
-    #     #Get the contact name row from the contact names table to allow population of the contact first name in the result of this function
-    #     contact_name_row = cls.find_by_id(id)
-
-    #     def contact_info(row):
-    #         return f'Contact {row[0]}: Name - {contact_name_row.first_name.capitalize()} Number - {row[1]}, ID - {row[2]}.'
-        
-    #     return [contact_info(row) for row in rows] if rows else None
-
-        # if rows:
-        #     # for row in rows:
-        #     #     print(f'Contact {row[0]}: Name - {contact_name_row.first_name.capitalize()} Number - {row[1]}, ID - {row[2]}.')
-        #     return [contact_info(row) for row in rows]
-        # else:
-        #     print('No number for the provided contact in record.')
     
     @classmethod
     def get_names_numbers(cls):
@@ -210,11 +174,6 @@ class ContactName:
             return f'Name: {row[0]} {row[1]}, Number: {row[2]}.'
         
         return [contact_info(row) for row in rows] if rows else None
-        # if rows:
-        #     for row in rows:
-        #         print(f'{row[0]} {row[1]}, {row[2]}.') 
-        #     else:
-        #         return 'No contacts in your contact list.'
 
     @classmethod
     def drop_table(cls):
@@ -225,18 +184,4 @@ class ContactName:
 
         CURSOR.execute(sql)
         CONN.commit()
-
-# ContactName.create_table()
-# ContactName.create('Jane', 'Doe')
-# print(ContactName.find_by_id(1))
-# print(ContactName.find_by_name('J'))
-# print(ContactName.get_all())
-# print('hello')
-# ContactName.get_names_numbers()
-# jon = ContactName.create('John', 'Michael')
-# print(jon)
-# jon.first_name = 'Jon'
-# print(jon.update())
-# print(jon.get_number())
-# jon.find_by_id(3)
-# ContactName.get_number(1)
+        
